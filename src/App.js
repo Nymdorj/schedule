@@ -1,24 +1,73 @@
-import logo from './logo.svg';
-import './App.css';
+import { DUMMY_DATA } from "./DUMMY_DATA";
+import "./App.css";
+import DataTable from "react-data-table-component";
+
+const json = JSON.parse(DUMMY_DATA);
+
+const columns = [
+  {
+    name: "Хэрэглэгчийн дугаар",
+    selector: "userid",
+  },
+  {
+    name: "Даваа",
+    selector: "monday",
+  },
+  {
+    name: "Мягмар",
+    selector: "tuesday",
+  },
+  {
+    name: "Лхагва",
+    selector: "wednesday",
+  },
+  {
+    name: "Пүрэв",
+    selector: "thursday",
+  },
+  {
+    name: "Баасан",
+    selector: "friday",
+  },
+  {
+    name: "Бямба",
+    selector: "saturday",
+  },
+  {
+    name: "Ням",
+    selector: "sunday",
+  },
+];
 
 function App() {
+  let days = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ];
+  let data = json.map((user) => {
+    let userData = Object.entries(user)[0];
+    return Object.assign(
+      { userid: userData[0] },
+      ...userData[1].map((date, i) => {
+        return { [days[i]]: date.time };
+      })
+    );
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+      <DataTable
+        title='Schedule'
+        pagination
+        paginationRowsPerPageOptions={[10, 25, 50]}
+        columns={columns}
+        data={data}
+      />
+      </div>
   );
 }
 
